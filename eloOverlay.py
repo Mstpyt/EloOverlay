@@ -27,18 +27,17 @@ class Worker:
         while 1:
             self.iElo, self.acEloToday, self.iRank, self.acResult, \
             self.acScore, self.acKd, self.acMap, self.iStreak = api_reader()
-
             if "NaN" in self.acEloToday:
-                core.set_value(f"{acEloToday}", f"Reloading API")
+                core.set_value("elotoday##", f"Reloading API")
             else:
-                core.set_value(f"{acEloToday}", f"{self.acEloToday}")
-            core.set_value(f"{iStreak}", f"{self.iStreak}")
-            core.set_value(f"{acMap}", f"{self.acMap}")
-            core.set_value(f"{acResult}", f"{self.acResult}")
-            core.set_value(f"{iElo}", f"{self.iElo}")
-            core.set_value(f"{iRank}", f"{self.iRank}")
-            core.set_value(f"{acScore}", f"{self.acScore}")
-            core.set_value(f"{acKd}", f"{self.acKd}")
+                core.set_value("elotoday##", f"{self.acEloToday}")
+            core.set_value("streak##", f"{self.iStreak}")
+            core.set_value("map##", f"\t{self.acMap}:")
+            core.set_value("result##", f"{self.acResult}")
+            core.set_value("elo##", f"{self.iElo}")
+            core.set_value("rank##", f"{self.iRank}")
+            core.set_value("score##", f"{self.acScore}")
+            core.set_value("kd##", f"{self.acKd}")
 
             sleep(60)
 
@@ -47,6 +46,41 @@ def long_process():
     w = Worker()
     d = threading.Thread(name='daemon', target=w.run, daemon=True)
     d.start()
+
+
+def add_faceit(iElo, iRank, acEloToday, iStreak):
+    core.add_button("\t\tFACEIT STATS\t\t")
+    core.add_text("\tCurrent Elo")
+    core.add_same_line(xoffset=130)
+    core.add_text("elo##", default_value=f"{iElo}")
+    core.add_text("\tRank")
+    core.add_same_line(xoffset=130)
+    core.add_text("rank##", default_value=f"{iRank}")
+    core.add_text("\tElo Today")
+    core.add_same_line(xoffset=130)
+    core.add_text("elotoday##", default_value=f"{acEloToday}")
+    core.add_text("\tWin Streak")
+    core.add_same_line(xoffset=130)
+    core.add_text("streak##", default_value=f"{iStreak}")
+
+
+def add_last_game(acMap, acResult, acScore, acKd):
+    """
+    LAST Game Header
+    """
+    core.add_button("\t\t LAST GAME\t\t  ")
+    core.add_text("map##", default_value=f"\t{acMap}: ")
+    core.add_same_line(xoffset=115)
+    core.add_text("result##", default_value=f"{acResult}")
+    core.add_same_line(xoffset=130)
+    core.add_text("score##", default_value=f"{acScore}")
+    core.add_text("\tK/D:")
+    core.add_same_line(xoffset=130)
+    core.add_text("kd##", default_value=f"{acKd}")
+    core.add_spacing(count=1)
+    core.add_text("powered by Dear PyGui")
+    core.add_same_line()
+    core.add_image("image##demo", "6727dpg.ico")
 
 
 """
@@ -66,8 +100,8 @@ with simple.window("Maniac Elo"):
     core.set_theme_item(mvGuiCol_BorderShadow, 130, 221, 168, 0)
     core.set_style_frame_border_size(1.00)
     core.set_theme_item(mvGuiCol_Button, 130, 221, 168, 150)
-    core.set_theme_item(mvGuiCol_ButtonHovered, 130, 221, 168, 255)
-    core.set_theme_item(mvGuiCol_ButtonActive, 130, 221, 168, 255)
+    core.set_theme_item(mvGuiCol_ButtonHovered, 130, 221, 168, 150)
+    core.set_theme_item(mvGuiCol_ButtonActive, 130, 221, 168, 150)
     core.set_main_window_size(250, 225)
     core.set_style_frame_rounding(6.00)
 
@@ -75,40 +109,15 @@ with simple.window("Maniac Elo"):
     Get Data from the API
     """
     iElo, acEloToday, iRank, acResult, acScore, acKd, acMap, iStreak = api_reader()
+    """
+    Build the Faceit Header and Data
+    """
+    add_faceit(iElo, iRank, acEloToday, iStreak)
+    """
+    Build the Last Game Header and Data
+    """
+    add_last_game(acMap, acResult, acScore, acKd)
 
-    """
-    Fill the {} with data and build up the App with fields
-    Header is build with a button xD
-    """
-    core.add_button("\t\tFACEIT STATS\t\t")
-    core.add_text("\tCurrent Elo")
-    core.add_same_line(xoffset=130)
-    core.add_text(f"{iElo}")
-    core.add_text("\tRank")
-    core.add_same_line(xoffset=130)
-    core.add_text(f"{iRank}")
-    core.add_text("\tElo Today")
-    core.add_same_line(xoffset=130)
-    core.add_text(f"{acEloToday}")
-    core.add_text("\tWin Streak")
-    core.add_same_line(xoffset=130)
-    core.add_text(f"{iStreak}")
-    """
-    LAST Game Header
-    """
-    core.add_button("\t\t LAST GAME\t\t  ")
-    core.add_text(f"\t{acMap}: ")
-    core.add_same_line(xoffset=115)
-    core.add_text(f"{acResult}")
-    core.add_same_line(xoffset=130)
-    core.add_text(f"{acScore}")
-    core.add_text("\tK/D:")
-    core.add_same_line(xoffset=130)
-    core.add_text(f"{acKd}")
-    core.add_spacing(count=1)
-    core.add_text("powered by Dear PyGui")
-    core.add_same_line()
-    core.add_image("image##demo", "6727dpg.ico")
     """
     START
     """
