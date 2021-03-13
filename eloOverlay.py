@@ -3,7 +3,8 @@ import threading
 from time import sleep
 from dearpygui.core import mvGuiCol_Text, mvGuiCol_WindowBg, mvGuiCol_Button, mvGuiCol_Separator, mvGuiCol_Border, \
     mvGuiCol_BorderShadow, mvGuiCol_ButtonHovered, mvGuiCol_ButtonActive
-from functions import api_reader
+from function import api_reader
+from config import Streamer
 
 """
 This app is build to integrate an Overlay into Obs or Streamlabs.
@@ -86,25 +87,24 @@ def add_last_game(acMap, acResult, acScore, acKd):
 """
 Create the Window with dear pyGui
 """
-with simple.window("Maniac Elo"):
-    simple.set_window_pos("Maniac Elo", 0, 0)
-    core.set_main_window_title("Maniac Elo")
+with simple.window(Streamer):
+    simple.set_window_pos(Streamer, 0, 0)
+    core.set_main_window_title(Streamer)
     """
     Set some Background and Font Colors
     also the frame rounding and the window size
     """
     core.set_theme_item(mvGuiCol_Text, 255, 255, 255, 255)
-    core.set_theme_item(mvGuiCol_WindowBg, 0, 0, 0, 255)
-    core.set_theme_item(mvGuiCol_Separator, 130, 221, 168, 255)
-    core.set_theme_item(mvGuiCol_Border, 130, 221, 168, 225)
-    core.set_theme_item(mvGuiCol_BorderShadow, 130, 221, 168, 0)
+    core.set_theme_item(mvGuiCol_WindowBg, 16, 18, 32, 255)
+    core.set_theme_item(mvGuiCol_Border, 24, 111, 179, 225)
+    core.set_theme_item(mvGuiCol_BorderShadow, 24, 111, 179, 255)
     core.set_style_frame_border_size(1.00)
-    core.set_theme_item(mvGuiCol_Button, 130, 221, 168, 150)
-    core.set_theme_item(mvGuiCol_ButtonHovered, 130, 221, 168, 150)
-    core.set_theme_item(mvGuiCol_ButtonActive, 130, 221, 168, 150)
-    core.set_main_window_size(250, 225)
+    core.set_theme_item(mvGuiCol_Button, 33, 150, 243, 255)
+    core.set_theme_item(mvGuiCol_ButtonHovered, 33, 150, 243, 150)
+    core.set_theme_item(mvGuiCol_ButtonActive, 33, 150, 243, 150)
+    core.set_main_window_size(215, 250)
     core.set_style_frame_rounding(6.00)
-
+    core.add_additional_font("OpenSans-Regular.ttf", size=14)
     """
     Get Data from the API
     """
@@ -123,4 +123,4 @@ with simple.window("Maniac Elo"):
     """
     core.set_start_callback(long_process)
     core.enable_docking(dock_space=False)
-    core.start_dearpygui(primary_window="Maniac Elo")
+    core.start_dearpygui(primary_window=Streamer)
