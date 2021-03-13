@@ -1,9 +1,10 @@
 import requests
-from config import URL
+from config import URL, Streamer
 
 
 def api_reader():
-    r = requests.get(URL)
+    FACEIT = str(URL) + str(Streamer)
+    r = requests.get(FACEIT)
     data = r.json()
     iElo = data['elo']
     acEloToday = data['todayEloDiff']
