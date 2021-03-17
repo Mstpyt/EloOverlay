@@ -12,4 +12,3 @@ The Librarys in use:
 Streams in use right now: 
 - https://www.twitch.tv/maniac
 - https://www.twitch.tv/matadorrr
-- https://www.twitch.tv/acoolbek
